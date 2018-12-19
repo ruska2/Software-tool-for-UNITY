@@ -31,3 +31,9 @@ Cieľom práce je vytvoriť softvérový nástroj podporujúci zápis, simuláci
 
 * [Program Verification using HOL-UNITY](../master/Documents/Articles/Andersen1994_Chapter_ProgramVerificationUsingHOL-UN.pdf) (Flemming Andersen, Kim Dam Petersen and Kimmi S. Pettersson, 1992)
 
+* [Uppaal 4.0 : Small Tutorial](../master/Documents/Articles/small_tutorial.pdf) (Alexandre David, 2009)
+
+* [A theory of timed automata](../master/Documents/Articles/Timed%20Automata.pdf) (Rajeev Alur**, David L. Dill**,1992)
+
+* [UPPAAL — a Tool Suite for Automatic Veriﬁcation of Real–Time Systems](../master/Documents/Articles/UPPAAL-A%20tool%20suite%20for%20Automatic%20Verification%20of%20Real-Time%20Systems.pdf
+) (Johan Bengtsson, Kim G. Larsen, Fredrik Larsson, Paul Pettersson, Wang Yi, 1996)
