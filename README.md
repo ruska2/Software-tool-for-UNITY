@@ -29,3 +29,5 @@ Cieľom práce je vytvoriť softvérový nástroj podporujúci zápis, simuláci
 
 * [A Logic for Concurrent Programing - Safety](../master/Articles/A%20Logic%20for%20Concurrent%20Programing%20Safety%20-%20Jayadev%20Misra.pdf) (Jayadev Misra April 12, 1994)
 
+* [Program Verification using HOL-UNITY](../master/Articles/Andersen1994_Chapter_ProgramVerificationUsingHOL-UN.pdf) (Flemming Andersen, Kim Dam Petersen and Kimmi S. Pettersson, 1992)
+
