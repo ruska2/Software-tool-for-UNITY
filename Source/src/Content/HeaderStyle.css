@@ -1,0 +1,18 @@
+#header{
+    display: block;
+    width: 100%;
+    height: 25px;
+    background: darkslateblue;
+    margin: auto;
+    border-bottom: 5px solid black;
+}
+
+#themelabel{
+    color: white;
+    font-size: 14px;
+    margin-left: 180px ;
+}
+
+#themeselection{
+    size: 2px;
+}
