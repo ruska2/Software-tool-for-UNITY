@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import './HeaderStyle.css';
+import DownloadIcon from './Images/download.png';
 
 class Header extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            acutalfile: 0,
+            files:[]
         };
     }
 
@@ -13,11 +16,34 @@ class Header extends Component {
         this.props.onThemeChange(event.target.value);
     };
 
+    componentWillUpdate(nextProps, nextState, nextContext) {
+        this.actualFile = nextProps.actualFile;
+        this.files = nextProps.files;
+    }
+
+    downloadUTY = () => {
+        if(this.state.files.length <= 0){
+            alert("You have to make file first!");
+            return;
+        }
+
+        let element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(this.state.files[this.state.actualfile][1]));
+        element.setAttribute('download', this.state.files[this.state.actualfile][0]);
+
+        element.style.display = 'none';
+        document.body.appendChild(element);
+
+        element.click();
+
+        document.body.removeChild(element);
+    };
+
     render() {
         return (
             <div>
                 <div id="header">
-                    <form>
+                    <form id="themeform">
                         <label id="themelabel">
                             Theme:
                             <select value={this.state.theme} onChange={this.handleChange} id="themeselection">
@@ -29,6 +55,9 @@ class Header extends Component {
                             </select>
                         </label>
                     </form>
+                    <div id="downloadico">
+                        <img src={DownloadIcon} onClick={this.downloadUTY}/>
+                    </div>
                 </div>
             </div>
 

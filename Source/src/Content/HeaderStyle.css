@@ -16,3 +16,16 @@
 #themeselection{
     size: 2px;
 }
+
+#themeform{
+    float: left;
+}
+
+#downloadico{
+    margin-left: 500px;
+}
+
+#downloadico:hover{
+    cursor: pointer;
+}
+
