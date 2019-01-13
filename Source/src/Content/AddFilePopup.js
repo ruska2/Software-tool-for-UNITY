@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import './Styles/AddFilePopupStyle.css';
 
 class AddFilePopup extends Component {
     constructor(props) {

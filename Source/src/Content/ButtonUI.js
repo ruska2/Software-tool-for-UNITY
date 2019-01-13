@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 
-import './UNITYEditorStyle.css';
+import './Styles/UNITYEditorStyle.css';
 import UTYtoXTAConverter from "../Converter/UTYtoXTAConverter";
 
 

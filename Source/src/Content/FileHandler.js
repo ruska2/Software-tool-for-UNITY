@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 
-import './UNITYEditorStyle.css';
+import './Styles/FileHandlerStyle.css';
 import TImage from "./Images/close.png";
 
 

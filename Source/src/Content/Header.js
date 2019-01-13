@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './HeaderStyle.css';
+import './Styles/HeaderStyle.css';
 import DownloadIcon from './Images/download.png';
 
 class Header extends Component {

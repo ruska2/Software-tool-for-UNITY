@@ -1,0 +1,51 @@
+#struct{
+    float: left;
+    width: 150px;
+    height: 500px;
+    background: grey;
+
+}
+
+#plus{
+    height: 25px;
+    padding: 5px 5px 5px 5px;
+    border-bottom: 2px solid black;
+}
+
+#pimg{
+    height: 25px;
+    background-image: url("../Images/plus.png");
+    background-repeat: no-repeat;
+}
+
+#activeline{
+    display: block;
+    height: 25px;
+    padding: 5px 5px 5px 5px;
+    border-bottom: 2px solid black;
+    background-color: lightslategrey;
+}
+
+#line{
+    display: block;
+    height: 25px;
+    padding: 5px 5px 5px 5px;
+    border-bottom: 2px solid black;
+
+}
+
+#line:hover {
+    background-color: darkmagenta;
+}
+
+.msg{
+    width: 12px;
+    height: 12px;
+
+}
+
+.msge{
+    width: 12px;
+    height: 12px;
+    cursor: pointer;
+}
