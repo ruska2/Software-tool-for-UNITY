@@ -71,7 +71,7 @@ class FileHandler extends Component {
         }
 
         if (this.state.files[parent] === undefined) return;
-        this.setState({actualFile: parent});
+        this.props.onActualFileChange(parent);
     };
 
 

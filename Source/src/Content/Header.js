@@ -7,7 +7,7 @@ class Header extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            acutalfile: 0,
+            actualFile: null,
             files:[]
         };
     }
@@ -17,8 +17,8 @@ class Header extends Component {
     };
 
     componentWillUpdate(nextProps, nextState, nextContext) {
-        this.actualFile = nextProps.actualFile;
-        this.files = nextProps.files;
+        this.state.actualFile = nextProps.actualFile;
+        this.state.files = nextProps.files;
     }
 
     downloadUTY = () => {
@@ -28,8 +28,8 @@ class Header extends Component {
         }
 
         let element = document.createElement('a');
-        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(this.state.files[this.state.actualfile][1]));
-        element.setAttribute('download', this.state.files[this.state.actualfile][0]);
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(this.state.files[this.state.actualFile][1]));
+        element.setAttribute('download', this.state.files[this.state.actualFile][0]);
 
         element.style.display = 'none';
         document.body.appendChild(element);

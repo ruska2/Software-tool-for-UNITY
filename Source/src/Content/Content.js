@@ -20,21 +20,25 @@ class Content extends Component {
         this.setState({theme: newValue});
     };
 
-    onCodeChange = (newValue) => {
-      this.setState({code: newValue});
+    onCodeChange = (files) => {
+      this.setState({files: files});
     };
 
     onFileChange = (files, actualFile) =>{
       this.setState({files: files, actualFile: actualFile})
     };
 
+    onActualFileChange = (actualFile) =>{
+      this.setState({actualFile: actualFile});
+    };
+
     render() {
         return (
             <div >
-                <Header onThemeChange={this.onThemeChange} actualFile={this.state.actualfile} files={this.state.files}/>
-                <FileHandler files={this.state.files} actualFile={this.state.actualFile} clickOnNewFile={this.clickOnNewFile} clickOnRemoveFile={this.onFileChange}/>
-                <UNITYEditor onCodeChange={this.onCodeChange} theme={this.state.theme}/>
-                <ButtonUI actualFile={this.state.actualFile} files={this.state.files} createNewFile={this.createNewFile}/>
+                <Header onThemeChange={this.onThemeChange} actualFile={this.state.actualFile} files={this.state.files}/>
+                <FileHandler files={this.state.files} actualFile={this.state.actualFile} clickOnNewFile={this.clickOnNewFile} clickOnRemoveFile={this.onFileChange} onActualFileChange={this.onActualFileChange}/>
+                <UNITYEditor files={this.state.files} actualFile={this.state.actualFile} onCodeChange={this.onCodeChange} theme={this.state.theme}/>
+                <ButtonUI files={this.state.files} actualFile={this.state.actualFile} createNewFile={this.createNewFile}/>
                 <AddFilePopup popUpControll={this.state.popUpControll} createNewFile={this.createNewFile}/>
             </div>
         )

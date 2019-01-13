@@ -13,7 +13,7 @@ class ButtonUI extends Component {
         super(props);
         this.state = {
             files: [],
-            actualFile: 0,
+            actualFile: null,
         };
     }
 
@@ -22,7 +22,7 @@ class ButtonUI extends Component {
     componentWillUpdate(nextProps, nextState, nextContext) {
         this.state.name = nextProps.name;
         this.state.files = nextProps.files;
-        this.state.actualfFle = nextProps.actualFile;
+        this.state.actualFile = nextProps.actualFile;
     }
 
 
