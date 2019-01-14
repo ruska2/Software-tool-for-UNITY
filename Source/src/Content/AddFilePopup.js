@@ -37,9 +37,8 @@ class AddFilePopup extends Component {
         return d;
     };
 
-
     closePopup = () => {
-        this.setState({popUpControll: false});
+        this.props.onClosePopup();
     };
 
 

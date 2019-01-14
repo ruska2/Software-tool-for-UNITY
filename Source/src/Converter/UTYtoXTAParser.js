@@ -14,6 +14,7 @@ class UTYtoXTAParser  {
         this.sequential = [];
         this.quantified = [];
         this.variables = [];
+        this.quantifiedparalell = [];
     }
 
     getBox() {
@@ -26,6 +27,11 @@ class UTYtoXTAParser  {
 
     getQuantified = () =>{
         return this.quantified;
+    };
+
+
+    getQuantifiedParalell = () =>{
+        return this.quantifiedparalell;
     };
 
     getVariables = () =>{
@@ -56,6 +62,7 @@ class UTYtoXTAParser  {
         let assignments = this.parseAssign(variables);
         let linear = assignments[0];
         let cycles = assignments[1];
+        let paralell = assignments[2];
 
         if (assignments === undefined && cycles === undefined) return;
         if(cycles === undefined) cycles = [];
@@ -63,6 +70,7 @@ class UTYtoXTAParser  {
         this.sequential = linear;
         this.quantified = cycles;
         this.variables = variables;
+        this.quantifiedparalell = paralell;
     };
 
     parseDeclare = () => {
@@ -243,6 +251,7 @@ class UTYtoXTAParser  {
     parseAssign = (variables) => {
         let assigments = [];
         let cycles = [];
+        let paralellcycles = [];
         console.log(this.assign);
         for (let i = 0; i < this.assign.length; i++) {
             if (this.assign[i].startsWith(this.getBox())) {
@@ -256,14 +265,18 @@ class UTYtoXTAParser  {
             if (line === "end") continue;
             if (line.startsWith("<")) {
                 //CYCLE
-                if(line.includes("<||")){
-                    //PARALELL
-                }else{
                     //SEQUENCE
+                    let paralell = false;
                     let variable = this.getStringBetween(line, "<", ":");
+
                     if(variable.startsWith(this.getBox()) || variable.startsWith("||")){
                         variable = variable.substring(1,variable.length).trim();
+                        if(variable.startsWith("|")){
+                            variable = variable.substring(1,variable.length).trim();
+                        }
+                        paralell = true;
                     }
+                    alert(variable);
                     let count = this.getStringBetween(line,":", "::");
                     let start = 0;
                     if(count.includes("<=")){
@@ -290,9 +303,14 @@ class UTYtoXTAParser  {
                         let secondpart  = this.replaceAll(splitedif[1],variable, i + "");
                         res.push(firstpart + " if " + secondpart);
                     }
-                    cycles.push(res);
+                    if(paralell){
+                        paralellcycles.push(res);
+                    }else{
+                        cycles.push(res);
+                    }
+
                 }
-            }
+
             else {
                 let splitonif = line.split("if");
                 let guard = "";
@@ -323,7 +341,7 @@ class UTYtoXTAParser  {
             }
         }
         console.log("cycles", cycles);
-        return [assigments, cycles];
+        return [assigments, cycles, paralellcycles];
     };
 
     getStringBetween = (string, str1, str2) => {

@@ -39,7 +39,7 @@ class Content extends Component {
                 <FileHandler files={this.state.files} actualFile={this.state.actualFile} clickOnNewFile={this.clickOnNewFile} clickOnRemoveFile={this.onFileChange} onActualFileChange={this.onActualFileChange}/>
                 <UNITYEditor files={this.state.files} actualFile={this.state.actualFile} onCodeChange={this.onCodeChange} theme={this.state.theme}/>
                 <ButtonUI files={this.state.files} actualFile={this.state.actualFile} createNewFile={this.createNewFile}/>
-                <AddFilePopup popUpControll={this.state.popUpControll} createNewFile={this.createNewFile}/>
+                <AddFilePopup popUpControll={this.state.popUpControll} createNewFile={this.createNewFile} onClosePopup={this.onClosePopup}/>
             </div>
         )
     }
@@ -54,6 +54,11 @@ class Content extends Component {
     clickOnNewFile = (actualFile) => {
         this.setState({actualFile: actualFile, popUpControll: true});
     };
+
+    onClosePopup = () => {
+        this.setState({popUpControll: false});
+    };
+
 
     checkName = (name) => {
         if (name.endsWith(".uty")) {
