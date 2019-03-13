@@ -38,6 +38,10 @@ class UTYtoXTAParser  {
         return this.variables;
     };
 
+    getAlways = () =>{
+        return this.always;
+    };
+
     parse = () => {
         const stringToList = new UTYstrToXTAlist();
         if(stringToList === undefined) return;
@@ -270,13 +274,14 @@ class UTYtoXTAParser  {
                     let variable = this.getStringBetween(line, "<", ":");
 
                     if(variable.startsWith(this.getBox()) || variable.startsWith("||")){
+                        if(!variable.startsWith(this.getBox())){
+                            paralell = true;
+                        }
                         variable = variable.substring(1,variable.length).trim();
                         if(variable.startsWith("|")){
                             variable = variable.substring(1,variable.length).trim();
                         }
-                        paralell = true;
                     }
-                    alert(variable);
                     let count = this.getStringBetween(line,":", "::");
                     let start = 0;
                     if(count.includes("<=")){
@@ -327,16 +332,23 @@ class UTYtoXTAParser  {
                 let vars = splitedline[0].split(",");
                 let asigns = splitedline[1].split(",");
                 if (vars.length !== asigns.length) {
-                    alert("Syntax Error! WRONG INDDEX");
+                    alert("Syntax Error! WRONG INDEX");
                     return;
                 }
-                for (let n = 0; n < vars.length; n++) {
-                    if (!(vars[n].trim() in variables)) {
-                        alert("Syntax Error!");
-                        return;
+                if(vars.length === 1){
+                    assigments.push([vars[0].trim(), asigns[0].trim(), guard])
+                }else{
+                    let res = [];
+                    for (let n = 0; n < vars.length; n++) {
+                        if (!(vars[n].trim() in variables)) {
+                            alert("Syntax Error!");
+                            return;
+                        }
+                        res.push(vars[n] + " := " + asigns[n].trim() + " if " + guard);
                     }
-                    assigments.push([vars[n].trim(), asigns[n].trim(), guard])
+                    paralellcycles.push(res);
                 }
+
 
             }
         }

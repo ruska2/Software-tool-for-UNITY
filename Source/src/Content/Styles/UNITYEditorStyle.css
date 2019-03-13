@@ -1,3 +1,42 @@
 #edit{
     float: left;
+    margin-top: 200px;
+}
+
+#unityEditorHolder{
+    float: left;
+    width: 570px;
+    height: 104vh;
+    border-right: 5px solid #7BCCCC;
+}
+
+#uploadLabel{
+    font: bold 11px Arial;
+    text-decoration: none;
+    background-color: #EEEEEE;
+    color: #333333;
+    padding: 2px 6px 2px 6px;
+    border-top: 1px solid #CCCCCC;
+    border-right: 1px solid #333333;
+    border-bottom: 1px solid #333333;
+    border-left: 1px solid #CCCCCC;
+    width: 80px;
+    display: block;
+}
+
+#editorfilename{
+    height: 25px;
+    background-color: white;
+    width:570px;
+}
+
+#diveditorfilename{
+    background-color: rgb(220, 220, 220);
+    font-family: 'Questrial',sans-serif;
+    font-size: 14px;
+    text-align: center;
+    color: rgb(119, 119, 119);
+    height: 25px;
+    padding-top: 3px;
+
 }

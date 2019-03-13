@@ -19,7 +19,7 @@ class UNITYEditor extends Component {
         this.state = {
             files: [],
             actualFile: null,
-            theme: "twilight",
+            theme: "chrome",
             code: ""
         };
 
@@ -29,21 +29,29 @@ class UNITYEditor extends Component {
         this.state.files = nextProps.files;
         this.state.actualFile = nextProps.actualFile;
         this.state.theme = nextProps.theme;
-        if(this.state.actualFile != null){
+        if(this.state.actualFile != null && nextProps.files[nextProps.actualFile] != undefined){
             this.state.code = nextProps.files[nextProps.actualFile][1];
         }
     }
 
     render() {
+        let name = this.state.files[this.state.actualFile]  === undefined ? "" : this.state.files[this.state.actualFile][0]
+        let w = name.length === 0 ? "0px" : (name.length * 10) + "px";
         return (
-            <div>
+            <div id={"unityEditorHolder"}>
+                <div id="editorfilename">
+                    <div id="diveditorfilename"  style={{width: w}}>
+                        {name}
+                    </div>
+                </div>
                 <AceEditor id="edit"
                            theme={this.state.theme}
                            onChange={this.onChange}
                            name="UNIQUE_ID_OF_DIV"
                            editorProps={{$blockScrolling: true}}
                            value={this.state.code}
-                           width='850px'
+                           width='570px'
+                           height='100vh'
                 />
             </div>
 

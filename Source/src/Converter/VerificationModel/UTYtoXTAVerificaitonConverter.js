@@ -1,7 +1,7 @@
-import UTYtoXTAParser from "./UTYtoXTAParser";
+import UTYtoXTAParser from "../UTYtoXTAParser";
 
 
-class UTYtoXTAConverter {
+class UTYtoXTAVerificaitonConverter {
 
     constructor(code) {
         this.code = code;
@@ -17,8 +17,6 @@ class UTYtoXTAConverter {
         let cycles = utyToXtaParser.getQuantified();
         let paralell = utyToXtaParser.getQuantifiedParalell();
         let always = utyToXtaParser.getAlways();
-        console.log("paralell");
-        console.log(paralell);
 
         let keys = [];
         Object.keys(variables).forEach(function (key) {
@@ -39,8 +37,8 @@ class UTYtoXTAConverter {
 
 
 
-
-        let paracyclecount = paralell.length;
+        toWriteStr += "int intvarhelper = 0;\n";
+       /* let paracyclecount = paralell.length;
 
         toWriteStr += "int executionOrder["+ (paracyclecount + counter + cyclecount2) +"] = {";
         for(let i = 0; i < (paracyclecount + counter + cyclecount2); i++){
@@ -48,9 +46,9 @@ class UTYtoXTAConverter {
         }
         toWriteStr = toWriteStr.substring(0,toWriteStr.length-1);
         toWriteStr += "};\n";
+*/
 
 
-        console.log(keys);
         for (let i = 0; i < keys.length; i++) {
             let key = keys[i];
             if ((variables[key].includes("true") || variables[key].includes("false")) && !(variables[key] instanceof Array)) {
@@ -80,25 +78,6 @@ class UTYtoXTAConverter {
         }
 
 
-
-
-        toWriteStr += "\n";
-        toWriteStr += "\n";
-
-        toWriteStr += "int intvarhelper = 0;\n";
-        toWriteStr += "bool boolvarhelper = false;\n";
-        toWriteStr += "bool updateAlways = false;\n";
-        toWriteStr += "int repeatCounter = 0;\n";
-        toWriteStr += "int repeatNumber = 1;\n";
-        toWriteStr += "int nextAssign = -1;\n";
-        toWriteStr += "bool randomize = true;\n";
-        toWriteStr += "int globalIndex= 1;\n";
-        toWriteStr += "bool added = false;\n";
-
-
-        toWriteStr += "\n";
-
-
         toWriteStr += "\n\n";
 
 
@@ -115,17 +94,11 @@ class UTYtoXTAConverter {
             let guard = assignments[i][2];
             let first = assignments[i][0] + " := " + assignments[i][1];
 
-            toWriteStr += "\tS0 -> S1 { guard nextAssign == " + (i+1) +";},\n";
-
             if (guard === "") {
-                toWriteStr += "\tS1 -> S1 { guard repeatNumber != repeatCounter; assign " + first + ", repeatCounter += 1;},\n";
+                toWriteStr += "\tS0 -> S1 { assign " + first + ";};\n";
             } else {
-                toWriteStr += "\tS1 -> S1 { guard " + guard + " && repeatNumber != repeatCounter; assign " + first + ", repeatCounter += 1;},\n";
-                toWriteStr += "\tS1 -> S1 { guard !(" + guard + ") && repeatNumber != repeatCounter; assign repeatCounter += 1;},\n";
+                toWriteStr += "\tS0 -> S1 { guard " + guard + "; assign " + first + ";};\n";
             }
-
-            toWriteStr += "\tS1 -> S0 { guard repeatNumber == repeatCounter; assign nextAssign = -1, updateAlways = true;};\n";
-
             toWriteStr += "}\n\n";
         }
 
@@ -203,19 +176,13 @@ class UTYtoXTAConverter {
                 }else{
                     con = line[0].trim();
                 }
-
-                toWriteStr += "\tS0 -> S1 { guard nextAssign == " + (j+1 + counter) +";},\n";
                 xs++;
 
                 if (guard !== "") {
-                    toWriteStr += "\tS1 -> S1  {guard  " + guard + " && repeatNumber != repeatCounter;  assign " + con +  ", repeatCounter += 1;},\n";
-                    toWriteStr += "\tS1 -> S1  {guard !(" + guard + ") && repeatNumber != repeatCounter; assign  repeatCounter += 1;},\n";
+                    toWriteStr += "\tS0 -> S1  {guard  " + guard + " ;  assign " + con +  ";};\n";
                 } else {
-                    toWriteStr += "\tS1 -> S1 {guard  repeatNumber != repeatCounter;  assign " + con + " , repeatCounter += 1;},\n";
+                    toWriteStr += "\tS1 -> S0 {assign " + con + ";};\n";
                 }
-
-                toWriteStr += "\tS1 -> S0 { guard repeatNumber == repeatCounter; assign nextAssign = -1, updateAlways = true;};\n";
-
                 toWriteStr += "}\n\n";
             }
 
@@ -226,10 +193,8 @@ class UTYtoXTAConverter {
         toWriteStr += "\n";
 
 
-
-
         //paralell
-        for(let i = 0; i < paracyclecount; i++){
+        /*for(let i = 0; i < paracyclecount; i++){
             toWriteStr += "process ParalellCycle" + (i + 1) + "() {\n\n";
             toWriteStr += "state\n";
             for(let j = 0; j < paralell[i].length; j++){
@@ -346,101 +311,8 @@ class UTYtoXTAConverter {
             toWriteStr += "}\n\n";
         }
 
+        */
 
-
-        toWriteStr += "process Cordinator() {\n\n";
-        toWriteStr += "int randomRepeatNumber = 1;\n";
-        toWriteStr += "state\n";
-        for(let i = 0; i < (counter + cyclecount2 + paracyclecount + 3) ; i++){
-            toWriteStr += "\tS" + i +",\n";
-        }
-        toWriteStr = toWriteStr.substring(0,toWriteStr.length-2) + ";\n";
-        toWriteStr += "commit\n";
-        for(let i = 0; i < (counter + cyclecount2 + paracyclecount + 3) ; i++){
-            toWriteStr += "\tS" + i +",\n";
-        }
-        toWriteStr = toWriteStr.substring(0,toWriteStr.length-2) + ";\n";
-        toWriteStr += "init S0;\n";
-        toWriteStr += "trans\n";
-        toWriteStr += "\tS0 -> S1{guard nextAssign == -1 && !randomize;},\n";
-        toWriteStr += "\tS1 -> S2{ select randomRepeatNumber : int[1,5];},\n";
-        for(let i = 2; i < (counter + cyclecount2+ paracyclecount)+3; i++){
-            if(i+1 === (counter + cyclecount2 +paracyclecount + 3)){
-                toWriteStr += "\tS"+ i +" -> S0{ guard nextAssign == -1 && updateAlways == false; assign repeatCounter = 0, randomize = true;};\n";
-            }else{
-                toWriteStr += "\tS"+ i +" -> S"+ (i+1) +"{ select randomRepeatNumber : int[1,5]; guard nextAssign == -1 && updateAlways == false;  assign repeatNumber = randomRepeatNumber, nextAssign = executionOrder["+ (i-2)+"], repeatCounter = 0; },\n";
-            }
-        }
-
-        toWriteStr += "}\n\n";
-
-        let alwaysstr = "";
-        if(always.length > 0 ){
-            alwaysstr += ",";
-        }
-        for(let i = 0; i < always.length; i++){
-            if(i+1 < always.length){
-                alwaysstr += always[i] + ", ";
-            }else{
-                alwaysstr += always[i] + ";";
-            }
-        }
-        toWriteStr += "process AlwaysUpdater() {\n\n";
-        toWriteStr += "state\n";
-        toWriteStr += "\tS0;\n";
-        toWriteStr += "commit\n";
-        toWriteStr += "\tS0;\n";
-        toWriteStr += "init S0;\n";
-        toWriteStr += "trans\n";
-        toWriteStr += "\tS0 -> S0{guard updateAlways == true; assign updateAlways = false " + alwaysstr+ ";};\n";
-
-
-        toWriteStr += "}\n\n";
-
-        let all = counter + cyclecount2 + paracyclecount;
-        toWriteStr += "process Randomizer() {\n\n";
-        toWriteStr += "int index = 0;\n";
-        toWriteStr += "state\n";
-        for(let i = 0; i <((counter + cyclecount2 + paracyclecount )) + 1 ; i++){
-            toWriteStr += "\tS" + i +",\n";
-        }
-        toWriteStr = toWriteStr.substring(0,toWriteStr.length-2) + ";\n";
-        toWriteStr += "commit\n";
-        for(let i = 0; i <((counter + cyclecount2 + paracyclecount )) + 1 ; i++){
-            toWriteStr += "\tS" + i +",\n";
-        }
-        toWriteStr = toWriteStr.substring(0,toWriteStr.length-2) + ";\n";
-        toWriteStr += "init S0;\n";
-        toWriteStr += "trans\n";
-        toWriteStr += "\tS0 -> S1{ select index : int[0, " + (all+1) +"]; guard randomize == true; assign ";
-            for(let i = 0; i < all; i++){
-                toWriteStr += "executionOrder[" + i +"] = 0,"
-            }
-            toWriteStr = toWriteStr.substring(0,toWriteStr.length -1);
-            toWriteStr += ", globalIndex = index;},\n";
-
-        let c = 1;
-        for(let i = 1; i < all+1; i+= 1){
-            if(i+1 === (all)+1){
-                toWriteStr += "\tS"+ i +" -> S0{guard added; assign randomize = false, added = false;},\n";
-                toWriteStr += "\tS"+ i +" -> S"+ (i) +"{guard globalIndex < "+ all +" && executionOrder[globalIndex] == 0 && !added; assign executionOrder[globalIndex] = " + c +", added = true;},\n";
-                toWriteStr += "\tS"+ i +" -> S"+ (i) +"{guard globalIndex < "+ all +" && executionOrder[globalIndex] != 0 && !added; assign globalIndex += 1;},\n";
-                toWriteStr += "\tS"+ i +" -> S"+ (i) +"{guard globalIndex >= "+ all +" && !added; assign globalIndex = 0;};\n";
-            }else{
-                toWriteStr += "\tS"+ i +" -> S"+ (i+1) +"{select index: int[0, " + all + "]; guard added; assign added = false, globalIndex = index;},\n";
-                toWriteStr += "\tS"+ (i) +" -> S"+ (i) +"{guard globalIndex < "+ all +" && executionOrder[globalIndex] == 0 && !added; assign executionOrder[globalIndex] = " + c +", added = true;},\n";
-                toWriteStr += "\tS"+ (i) +" -> S"+ (i) +"{guard globalIndex < "+ all +" && executionOrder[globalIndex] != 0 && !added; assign globalIndex += 1;},\n";
-                toWriteStr += "\tS"+ (i) +" -> S"+ (i) +"{guard globalIndex >= "+ all +" && !added; assign globalIndex = 0;},\n";
-            }
-            c++;
-        }
-
-
-        toWriteStr += "}\n\n";
-
-        toWriteStr += "cordinator = Cordinator();\n";
-        toWriteStr += "randomizer = Randomizer();\n";
-        toWriteStr += "alwaysUpdater = AlwaysUpdater();\n";
 
         for (let i = 0; i < counter; i++) {
             toWriteStr += "line" + (i + 1) + " = Line" + (i + 1) + "();\n";
@@ -452,12 +324,12 @@ class UTYtoXTAConverter {
             }
         }
 
-        for (let i = 0; i < paracyclecount; i++) {
+        /*for (let i = 0; i < paracyclecount; i++) {
                 toWriteStr += "paralellCycle" + (i + 1) + " = ParalellCycle" + (i + 1) + "();\n";
-        }
+        }*/
 
 
-        toWriteStr += "system cordinator, randomizer, alwaysUpdater,";
+        toWriteStr += "system ";
         for (let i = 0; i < counter; i++) {
             if (i + 1 === counter) {
                 toWriteStr += "line" + (i + 1) + ",";
@@ -472,9 +344,9 @@ class UTYtoXTAConverter {
             }
         }
 
-        for (let i = 0; i < paracyclecount; i++) {
+        /*for (let i = 0; i < paracyclecount; i++) {
                 toWriteStr += "paralellCycle" + (i + 1) + ",";
-        }
+        }*/
 
         toWriteStr = toWriteStr.substring(0,toWriteStr.length-1) + ";";
 
@@ -485,4 +357,4 @@ class UTYtoXTAConverter {
 
 }
 
-export default UTYtoXTAConverter;
+export default UTYtoXTAVerificaitonConverter;

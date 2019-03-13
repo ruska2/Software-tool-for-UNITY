@@ -4,15 +4,17 @@ import Header from "./Header";
 import ButtonUI from "./ButtonUI";
 import FileHandler from "./FileHandler";
 import AddFilePopup from "./AddFilePopup";
+import VerificationEditor from "./VerificationEditor";
 
 class Content extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            theme: "twilight",
+            theme: "chrome",
             actualFile: 0,
             files: [],
-            popUpControll: false
+            popUpControll: false,
+            verificationCode: ""
         };
     }
 
@@ -32,13 +34,17 @@ class Content extends Component {
       this.setState({actualFile: actualFile});
     };
 
+    onVerificationCodeChange = (newValue) =>{
+        this.setState({verificationCode: newValue});
+    };
+
     render() {
         return (
             <div >
-                <Header onThemeChange={this.onThemeChange} actualFile={this.state.actualFile} files={this.state.files}/>
-                <FileHandler files={this.state.files} actualFile={this.state.actualFile} clickOnNewFile={this.clickOnNewFile} clickOnRemoveFile={this.onFileChange} onActualFileChange={this.onActualFileChange}/>
+                <Header onThemeChange={this.onThemeChange}  verificationCode={this.state.verificationCode} actualFile={this.state.actualFile} files={this.state.files}/>
+                <FileHandler files={this.state.files} actualFile={this.state.actualFile} createNewFile={this.createNewFile} clickOnNewFile={this.clickOnNewFile} clickOnRemoveFile={this.onFileChange} onActualFileChange={this.onActualFileChange}/>
                 <UNITYEditor files={this.state.files} actualFile={this.state.actualFile} onCodeChange={this.onCodeChange} theme={this.state.theme}/>
-                <ButtonUI files={this.state.files} actualFile={this.state.actualFile} createNewFile={this.createNewFile}/>
+                <VerificationEditor theme={this.state.theme} code={this.state.verificationCode} onCodeChange={this.onVerificationCodeChange}/>
                 <AddFilePopup popUpControll={this.state.popUpControll} createNewFile={this.createNewFile} onClosePopup={this.onClosePopup}/>
             </div>
         )
