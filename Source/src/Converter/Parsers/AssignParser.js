@@ -34,7 +34,8 @@ class AssignParser{
                 }
                 let iteratorVariable = this.commonFunctions.getIteratorVariable(parsedLine);
                 let startNumber = this.commonFunctions.getStartNumberOfIterator(parsedLine.split(":")[1]);
-                let endLine = this.commonFunctions.getStringBetween(parsedLine, startNumber, "::")
+                let endLine = this.commonFunctions.getStringBetween(parsedLine, ":", "::");
+                endLine = endLine.split(iteratorVariable)[1];
                 let endNumber = this.commonFunctions.getEndNumberOfIterator(endLine);
                 let expression = parsedLine.split("::")[1];
                 let quantifiedParts = [];
