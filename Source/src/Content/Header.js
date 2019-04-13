@@ -86,11 +86,13 @@ class Header extends Component {
 
         const utyToXtaConverter = new UTYtoXTAConverter(code);
         let text = utyToXtaConverter.convertToString();
-        if(text === undefined) return;
+        if(text === undefined || text === "") return;
 
         let element = document.createElement('a');
         element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-        element.setAttribute('download', "test.xta");
+        let fileName = this.state.files[this.state.actualFile][0];
+        fileName = fileName.substring(0,fileName.length-4);
+        element.setAttribute('download', fileName+".xta");
         alert(text);
         element.style.display = 'none';
         document.body.appendChild(element);

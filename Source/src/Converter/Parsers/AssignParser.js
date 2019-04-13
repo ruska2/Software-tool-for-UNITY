@@ -99,7 +99,8 @@ class AssignParser{
             return false;
         }
         let variables = splitedLine[0].split(",");
-        let values = splitedLine[1].split(",");
+        splitedLine[1] = this.changeFunctionComa(splitedLine[1]);
+        let values = this.changeBackFunctionComa(splitedLine[1].split(","));
 
         if (!this.errorHandler.checkInitNumberInRow(variables,values)){
             return false;
@@ -185,11 +186,9 @@ class AssignParser{
                 }else{
                     if (this.initializedVariables[key][0] === "bool"){
                         oneLineString += "swapB(" + key + ", " + keynext + "), ";
-
                     }
                     else {
                         oneLineString += "swap(" + key + ", " + keynext + "), ";
-
                     }
                     n++;
                 }
@@ -198,6 +197,42 @@ class AssignParser{
        return [oneLineString.substring(0,oneLineString.length-2),guard];
 
     }
+
+    changeFunctionComa = (line) => {
+        let indexes = [];
+        if (line.includes("(") && line.includes(")")){
+            let inside = false;
+            for (let i = 0; i < line.length; i++){
+                if (line[i] === "("){
+                    inside = true;
+                }
+                if (inside && line[i] === ","){
+                    indexes.push(i);
+                }
+                if (inside && line[i] === ")"){
+                    inside = false;
+                }
+            }
+            for (let i = 0; i < indexes.length; i++){
+                let index = indexes[i];
+                line = line.substr(0, index) + '#' + line.substr(index + 1);
+            }
+        }
+        return line;
+    };
+
+    changeBackFunctionComa = (list) =>{
+        let l = [];
+        for (let i = 0; i < list.length; i++){
+            if (list[i].includes("#")){
+                l.push(this.commonFunctions.replaceAll(list[i],"#",","));
+            }
+            else{
+                l.push(list[i]);
+            }
+        }
+        return l;
+    };
 }
 
 export default AssignParser;

@@ -19,7 +19,7 @@ class UTYtoXTAConverter {
         let paralellAssignments = utyToXtaParser.paralellAssignments;
         let numberOfAssignments = sequentialAssignments.length + paralellAssignments.length;
 
-        if (numberOfAssignments == 0) return;
+        if (numberOfAssignments === 0) return;
 
         toWriteStr += this.convertVariablesToString(variables);
         toWriteStr += "\n\n";
@@ -29,6 +29,12 @@ class UTYtoXTAConverter {
         toWriteStr += this.createAlwaysUpdateFunction(utyToXtaParser.alwaysSection);
         toWriteStr += "\n\n";
         toWriteStr += this.createSwapFunction();
+        toWriteStr += "\n\n";
+        toWriteStr += this.createResetExecutionOrder(numberOfAssignments);
+        toWriteStr += "\n\n";
+        toWriteStr += this.createMinimum();
+        toWriteStr += "\n\n";
+        toWriteStr += this.createMaximum();
         toWriteStr += "\n\n";
         toWriteStr += this.convertSequentialAssignments(sequentialAssignments);
         toWriteStr += this.convertParalelAssignments(paralellAssignments,sequentialAssignments.length);
@@ -93,8 +99,6 @@ class UTYtoXTAConverter {
             toWriteStr += "int repeatNumber = 1;\n";
             toWriteStr += "int nextAssign = -1;\n";
             toWriteStr += "bool randomize = true;\n";
-            toWriteStr += "int globalIndex= 1;\n";
-            toWriteStr += "bool added = false;\n";
         return toWriteStr;
     };
 
@@ -105,6 +109,30 @@ class UTYtoXTAConverter {
         }
         toWriteStr = toWriteStr.substring(0,toWriteStr.length-1);
         toWriteStr += "};\n";
+        return toWriteStr;
+    };
+
+    createResetExecutionOrder = (length) => {
+        let toWriteStr = "void resetExecutionOrder(){\n";
+            toWriteStr += "\tfor (i : int[0,"+(length-1)+"]){\n";
+            toWriteStr += "\t\texecutionOrder[i] = 0;\n";
+            toWriteStr += "\t }\n}\n"
+        return toWriteStr;
+    };
+
+    createMinimum = () => {
+      let toWriteStr = "";
+      toWriteStr += "int min(int &a, int &b){\n";
+      toWriteStr += "\t return a < b ? a : b;\n";
+      toWriteStr += "}\n";
+      return toWriteStr;
+    };
+
+    createMaximum = () => {
+        let toWriteStr = "";
+        toWriteStr += "int max(int &a, int &b){\n";
+        toWriteStr += "\t return a > b ? a : b;\n";
+        toWriteStr += "}\n";
         return toWriteStr;
     };
 
@@ -228,26 +256,24 @@ class UTYtoXTAConverter {
 
     createCoordinator = (length) =>{
         let toWriteStr = "process Coordinator() {\n\n";
-        toWriteStr += "int randomRepeatNumber = 1;\n";
         toWriteStr += "state\n";
-        for(let i = 0; i < (length + 3) ; i++){
+        for(let i = 0; i < (length + 2) ; i++){
             toWriteStr += "\tS" + i +",\n";
         }
         toWriteStr = toWriteStr.substring(0,toWriteStr.length-2) + ";\n";
         toWriteStr += "commit\n";
-        for(let i = 0; i < (length + 3) ; i++){
+        for(let i = 0; i < (length + 2) ; i++){
             toWriteStr += "\tS" + i +",\n";
         }
         toWriteStr = toWriteStr.substring(0,toWriteStr.length-2) + ";\n";
         toWriteStr += "init S0;\n";
         toWriteStr += "trans\n";
         toWriteStr += "\tS0 -> S1{guard nextAssign == -1 && !randomize;},\n";
-        toWriteStr += "\tS1 -> S2{ select randomRepeatNumber : int[1,5];},\n";
-        for(let i = 2; i < (length + 3); i++){
-            if(i+1 === (length + 3)){
+        for(let i = 1; i < (length + 2); i++){
+            if(i+1 === (length + 2)){
                 toWriteStr += "\tS"+ i +" -> S0{ guard nextAssign == -1; assign repeatCounter = 0, randomize = true;};\n";
             }else{
-                toWriteStr += "\tS"+ i +" -> S"+ (i+1) +"{ select randomRepeatNumber : int[1,5]; guard nextAssign == -1;  assign repeatNumber = randomRepeatNumber, nextAssign = executionOrder["+ (i-2)+"], repeatCounter = 0; },\n";
+                toWriteStr += "\tS"+ i +" -> S"+ (i+1) +"{ select randomRepeatNumber : int[1,5]; guard nextAssign == -1;  assign repeatNumber = randomRepeatNumber, nextAssign = executionOrder["+ (i-1)+"], repeatCounter = 0; },\n";
             }
         }
 
@@ -257,7 +283,8 @@ class UTYtoXTAConverter {
 
     createRandomizer = (length) =>{
         let toWriteStr = "process Randomizer() {\n\n";
-        toWriteStr += "int index = 0;\n";
+        toWriteStr += "int globalIndex= 1;\n";
+        toWriteStr += "bool added = false;\n";
         toWriteStr += "state\n";
         for(let i = 0; i <(length + 1) ; i++){
             toWriteStr += "\tS" + i +",\n";
@@ -270,12 +297,7 @@ class UTYtoXTAConverter {
         toWriteStr = toWriteStr.substring(0,toWriteStr.length-2) + ";\n";
         toWriteStr += "init S0;\n";
         toWriteStr += "trans\n";
-        toWriteStr += "\tS0 -> S1{ select index : int[0, " + (length+1) +"]; guard randomize == true; assign ";
-        for(let i = 0; i < length; i++){
-            toWriteStr += "executionOrder[" + i +"] = 0,"
-        }
-        toWriteStr = toWriteStr.substring(0,toWriteStr.length -1);
-        toWriteStr += ", globalIndex = index;},\n";
+        toWriteStr += "\tS0 -> S1{ select index : int[0, " + (length+1) +"]; guard randomize == true; assign resetExecutionOrder(), globalIndex = index;},\n";
 
         let c = 1;
         for(let i = 1; i < length+1; i+= 1){

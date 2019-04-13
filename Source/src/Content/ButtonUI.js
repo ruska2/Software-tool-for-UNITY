@@ -61,11 +61,15 @@ class ButtonUI extends Component {
 
         const utyToXtaConverter = new UTYtoXTAConverter(code);
         let text = utyToXtaConverter.convertToString();
+        if(text === ""){
+            return;
+        }
         if(text === undefined) return;
 
         let element = document.createElement('a');
         element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-        element.setAttribute('download', "test.xta");
+        element.setAttribute('download', this.state.files[this.state.actualFile][0]+".xta");
+        console.log(this.state.files);
         alert(text);
         element.style.display = 'none';
         document.body.appendChild(element);
