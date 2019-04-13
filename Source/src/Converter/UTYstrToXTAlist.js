@@ -89,7 +89,7 @@ class UTYstrToXTAlist{
     getListFromString = (code) =>{
         let splitedlines = code.split("\n");
 
-        if (splitedlines.length < 2) {
+        if (splitedlines.length < 4) {
             alert("Syntax Error!");
             return;
         }
@@ -98,7 +98,7 @@ class UTYstrToXTAlist{
 
         for (let i = 0; i < splitedlines.length; i++) {
             if (splitedlines[i].trim() !== "") {
-                trimedlines.push(splitedlines[i].trim());
+                trimedlines.push(this.removeAllSpaces(splitedlines[i].trim()));
             }
         }
 
@@ -111,7 +111,16 @@ class UTYstrToXTAlist{
         this.strToListInit(trimedlines);
         this.strToListAlways(trimedlines);
         this.strToListAssign(trimedlines);
+
+        console.log("getLinesFromEditor:");
+        console.log(this);
+    };
+
+    removeAllSpaces = (str) =>{
+        return str.replace(/\s/g, "");
     }
+
+
 
 }
 

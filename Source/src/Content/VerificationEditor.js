@@ -10,6 +10,7 @@ import 'brace/theme/chrome';
 import 'brace/theme/github';
 import 'brace/theme/monokai';
 import 'brace/theme/eclipse';
+import 'brace/theme/cobalt';
 
 
 class UNITYEditor extends Component {
@@ -35,12 +36,12 @@ class UNITYEditor extends Component {
                     Verification
                 </div>
                 <AceEditor id="vedit"
-                           theme={this.state.theme}
+                           theme={"cobalt"}
                            onChange={this.onChange}
                            name="UNIQUE_ID_OF_DIV"
                            editorProps={{$blockScrolling: true}}
                            value={this.state.code}
-                           width='100hh'
+                           width='100%'
                            height="100vh"
                 />
             </div>

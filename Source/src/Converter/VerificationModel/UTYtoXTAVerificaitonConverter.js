@@ -1,4 +1,4 @@
-import UTYtoXTAParser from "../UTYtoXTAParser";
+import UTYtoXTAParser from "../Parsers/UTYtoXTAParser";
 
 
 class UTYtoXTAVerificaitonConverter {
@@ -55,7 +55,7 @@ class UTYtoXTAVerificaitonConverter {
                 toWriteStr += "bool " + key + " = " + variables[key] + ";\n";
             }
             else if (!isNaN(Number(variables[key]))) {
-                toWriteStr += "int " + key + " = " + variables[key] + ";\n";
+                toWriteStr += "int " + key + " = -3000 ;\n";
             } else {
                 let arry = variables[key];
                 let helperString = "{";
@@ -94,10 +94,13 @@ class UTYtoXTAVerificaitonConverter {
             let guard = assignments[i][2];
             let first = assignments[i][0] + " := " + assignments[i][1];
 
+
             if (guard === "") {
-                toWriteStr += "\tS0 -> S1 { assign " + first + ";};\n";
+                toWriteStr += "\tS0 -> S1 { assign " + first + ";},\n";
+                toWriteStr += "\tS0 -> S0 { assign " + first + ";};\n";
             } else {
-                toWriteStr += "\tS0 -> S1 { guard " + guard + "; assign " + first + ";};\n";
+                toWriteStr += "\tS0 -> S1 { guard "  + guard + "; assign " + first + ";},\n";
+                toWriteStr += "\tS0 -> S0 { guard "  + guard + "; assign " + first + ";};\n";
             }
             toWriteStr += "}\n\n";
         }
@@ -178,6 +181,7 @@ class UTYtoXTAVerificaitonConverter {
                 }
                 xs++;
 
+                alert(con);
                 if (guard !== "") {
                     toWriteStr += "\tS0 -> S1  {guard  " + guard + " ;  assign " + con +  ";};\n";
                 } else {

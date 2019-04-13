@@ -84,50 +84,46 @@
 
 #buttonUI{
     float: left;
-    width: 1080px;
+    width: 80%;
     height: 40px;
 }
 
 
 #toXTA{
-    height: 26px;
+    height: 30px;
     width: 40px;
     float:left;
-    background-color: #dceede ;
+    background-color: rgb(236, 236, 236) ;
     margin-left: 200px;
     font-family: 'Questrial',sans-serif;
     color: rgb(63, 64, 63);
     font-size: 12px;
     text-align: center;
-    border-bottom: 4px solid #78b087;
     padding-top: 10px;
 }
 
 #toXTA:hover{
     cursor: pointer;
-    background-color: #78b087;
-    color: whitesmoke;
+    background-color: white;
+
 }
 
 #toQuery{
-    height: 26px;
+    height: 30px;
     width: 60px;
     float: left;
-    background-color: #dceede ;
+    background-color: rgb(236, 236, 236) ;
     margin-left: 230px;
     font-family: 'Questrial',sans-serif;
     color: rgb(63, 64, 63);
-    color: rgb(63, 64, 63);
     font-size: 12px;
     text-align: center;
-    border-bottom: 4px solid #78b087;
     padding-top: 10px;
 }
 
 #toQuery:hover{
     cursor: pointer;
-    background-color: #78b087;
-    color: whitesmoke;
+    background-color: white;
 }
 
 #toXTAVerif{

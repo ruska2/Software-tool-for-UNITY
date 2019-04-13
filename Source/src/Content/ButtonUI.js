@@ -35,8 +35,6 @@ class ButtonUI extends Component {
             <div>
                 <input type="button" value="ConvertToXTA" onClick={this.onConvert}/>
                 <input   type="button" value="ConvertQuery" onClick={this.onQueryConvert}/>
-
-
                 <input type="button" value="ConvertToXTAVerif" onClick={this.onVerification}/>
             </div>
         )

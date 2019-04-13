@@ -25,7 +25,6 @@ class FileHandler extends Component {
     }
     render() {
         let fileList = this.writeFiles();
-        let displayDropContent = this.state.dropDownContent ? "block" : "none";
         return (
             <div id="struct">
                 <div id="plus">

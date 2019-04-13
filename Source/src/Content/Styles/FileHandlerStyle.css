@@ -1,6 +1,6 @@
 #struct{
     float: left;
-    width: 150px;
+    width: 12%;
     height: 104vh;
     background: #ffffff;
     border-right: 5px solid #7BCCCC;
@@ -36,7 +36,7 @@
 
 
 #dropdownmenu{
-    float: left;
+    float: right;
     width: 20px;
     margin-top: 3px;
     text-align: center;
@@ -107,6 +107,7 @@
     position: relative;
     display: inline-block;
     z-index: 5;
+    float: right;
 }
 
 /* Dropdown Content (Hidden by Default) */
