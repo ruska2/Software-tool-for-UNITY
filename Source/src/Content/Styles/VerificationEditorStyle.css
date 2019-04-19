@@ -1,17 +1,36 @@
 #verifholder{
     float: left;
-    width: 35%;
-    height: 80vh;
-
+    width: 55%;
+    height: 20vh;
+    overflow: hidden;
+    border-right: 5px solid #7BCCCC;
 }
 
 #verificationLabel{
-    height: 21px;
+    height: 26px;
     margin-top: 4px;
     margin-left: 10px;
     font-size: 16px;
     color: rgb(63, 64, 63);
-    font-family: 'Questrial',sans-serif;
+    width: calc(100% - 10px);
+    font-family: 'Signika', sans-serif;
+    padding-top: 6px;
+}
 
+#toQueryb{
+    border: none;
+    background: #0e1698;
+    color: #ffffff !important;
+    font-weight: 100;
+    padding: 5px;
+    margin: 5px;
+    border-radius: 6px;
+    display: inline-block;
+    margin-top: 1px;
+    margin-bottom: 3px;
+}
 
+#toQueryb:hover{
+    cursor: pointer;
+    background-color: darkslateblue;
 }

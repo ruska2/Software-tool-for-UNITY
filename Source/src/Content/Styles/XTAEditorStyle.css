@@ -1,0 +1,39 @@
+#edit{
+    float: left;
+    margin-top: 200px;
+}
+
+#xtaEditorHolder{
+    float: right;
+    width: calc(45% - 5px);
+    height: 60vh;
+    overflow: hidden;
+}
+
+
+#xtaEditorfilename{
+    height: 15px;
+    background-color: white;
+    width:100%;
+    float: left;
+    color: whitesmoke;
+    font-family: 'Signika', sans-serif;
+    padding: 5px;
+}
+
+#diveditorfilename{
+    font-family: 'Questrial',sans-serif;
+    font-size: 14px;
+    text-align: center;
+    height: 22px;
+    padding-top: 3px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+
+#utyEditorSettings{
+    height: 36px;
+}
+

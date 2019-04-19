@@ -15,18 +15,26 @@ class FileHandler extends Component {
             actualFile: null,
             enter: false,
             ent: false,
+            shortCuts :{},
+            theme : "chrome",
+            themeColors:{"chrome":"#FFFFFF", "twilight":"#141414", "monokai":"#272822", "cobalt": "#002240"}
         };
     }
 
     componentWillUpdate(nextProps, nextState, nextContext) {
         this.state.actualFile = nextProps.actualFile;
         this.state.files = nextProps.files;
+        this.state.theme = nextProps.theme;
 
     }
     render() {
         let fileList = this.writeFiles();
+        let backC = this.state.themeColors[this.state.theme];
+        if (backC === undefined){
+            backC = "white";
+        }
         return (
-            <div id="struct">
+            <div id="struct" style={{backgroundColor: backC}}>
                 <div id="plus">
                     <div id="filestitle">Files</div>
                     <div id="pimg"  onMouseEnter={this.onEnterNew} onClick={this.clickNewFile} onMouseLeave={this.onLeaveNew}
@@ -114,13 +122,19 @@ class FileHandler extends Component {
 
     writeFiles = () => {
         let f = [];
+        this.state.shortCuts = {};
+        let col = "black";
+        if (this.state.theme !== undefined && this.state.theme !== "chrome" ){
+            col = "white";
+        }
+
         for (let i = 0; i < this.state.files.length; i++) {
             if (this.state.actualFile === i) {
                 f.push( <div id="activeline" style={{color: 'white', background: '#7A98A5', margin: 'auto'}} onClick={this.onFileClick}>
-                            <input type={"hidden"} value={this.state.files[i][0]}/>
                             <img className={"fileIcon"} src={FileImage} height="12" width="12"/>
 
                             <div className={"fileName"}><input type={"hidden"} value={this.state.files[i][0]}/>{this.state.files[i][0]}</div>
+
                             <img className={this.state.ent ? "msge" : "msg"} onMouseEnter={this.onDeleteEneter} onMouseLeave={this.onDeleteLeave} onClick={this.removeFile} src={DeleteImage}></img>
 
 
@@ -128,11 +142,11 @@ class FileHandler extends Component {
                 continue;
             }
             f.push(<div id="line" onClick={this.onFileClick}>
-                <input type={"hidden"} value={this.state.files[i][0]}/>
                 <img className={"fileIcon"} src={FileImage} height="12" width="12"/>
-                <div className={"fileName"} ><input type={"hidden"} value={this.state.files[i][0]}/>{this.state.files[i][0]}</div>
-                <img className={this.state.ent ? "msge" : "msg"} onMouseEnter={this.onDeleteEneter} onMouseLeave={this.onDeleteLeave} onClick={this.removeFile} src={DeleteImage}></img>
-            </div>);
+                <div style={{color: col}} className={"fileName"} ><input type={"hidden"} value={this.state.files[i][0]}/>{this.state.files[i][0]}</div>
+                     <img className={this.state.ent ? "msge" : "msg"} onMouseEnter={this.onDeleteEneter} onMouseLeave={this.onDeleteLeave} onClick={this.removeFile} src={DeleteImage}></img>
+
+                </div>);
         }
         return f;
     };

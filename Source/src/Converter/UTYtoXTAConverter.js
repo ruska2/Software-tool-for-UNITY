@@ -36,8 +36,8 @@ class UTYtoXTAConverter {
         toWriteStr += "\n\n";
         toWriteStr += this.createMaximum();
         toWriteStr += "\n\n";
-        toWriteStr += this.convertSequentialAssignments(sequentialAssignments);
-        toWriteStr += this.convertParalelAssignments(paralellAssignments,sequentialAssignments.length);
+        toWriteStr += this.convertSequentialAssignments(sequentialAssignments, utyToXtaParser.alwaysSection.length);
+        toWriteStr += this.convertParalelAssignments(paralellAssignments,sequentialAssignments.length, utyToXtaParser.alwaysSection.length);
         toWriteStr += this.createCoordinator(numberOfAssignments);
         toWriteStr += this.createRandomizer(numberOfAssignments);
         toWriteStr += this.createSystemDeclaration(sequentialAssignments,paralellAssignments);
@@ -116,7 +116,7 @@ class UTYtoXTAConverter {
         let toWriteStr = "void resetExecutionOrder(){\n";
             toWriteStr += "\tfor (i : int[0,"+(length-1)+"]){\n";
             toWriteStr += "\t\texecutionOrder[i] = 0;\n";
-            toWriteStr += "\t }\n}\n"
+            toWriteStr += "\t }\n}\n";
         return toWriteStr;
     };
 
@@ -136,7 +136,8 @@ class UTYtoXTAConverter {
         return toWriteStr;
     };
 
-    convertSequentialAssignments = (assignemnts) => {
+    convertSequentialAssignments = (assignemnts, alwaysLength) => {
+        let alwaysUpdate = alwaysLength === 0 ? "" : ", alwaysUpdate()";
         let toWriteStr = "";
         for (let i = 0; i < assignemnts.length; i++){
             toWriteStr += "process Assignment" + (i + 1) + "() {\n\n";
@@ -154,10 +155,10 @@ class UTYtoXTAConverter {
             toWriteStr += "\tS0 -> S1 { guard nextAssign == " + (i+1) +";},\n";
 
             if (guard === "") {
-                toWriteStr += "\tS1 -> S1 { guard repeatNumber != repeatCounter; assign " + expresion+ ", repeatCounter += 1;},\n";
+                toWriteStr += "\tS1 -> S1 { guard repeatNumber != repeatCounter; assign " + expresion+ ", repeatCounter += 1 " + alwaysUpdate + ";},\n";
             } else {
-                toWriteStr += "\tS1 -> S1 { guard " + guard + " && repeatNumber != repeatCounter; assign " + expresion + ", repeatCounter += 1;},\n";
-                toWriteStr += "\tS1 -> S1 { guard !(" + guard + ") && repeatNumber != repeatCounter; assign repeatCounter += 1;},\n";
+                toWriteStr += "\tS1 -> S1 { guard " + guard + " && repeatNumber != repeatCounter; assign " + expresion + ", repeatCounter += 1 " + alwaysUpdate + ";},\n";
+                toWriteStr += "\tS1 -> S1 { guard !(" + guard + ") && repeatNumber != repeatCounter; assign repeatCounter += 1 " + alwaysUpdate + ";},\n";
             }
 
             toWriteStr += "\tS1 -> S0 { guard repeatNumber == repeatCounter; assign nextAssign = -1;};\n";
@@ -167,7 +168,8 @@ class UTYtoXTAConverter {
         return toWriteStr;
     };
 
-    convertParalelAssignments = (paralellAssignments, seqLength) =>{
+    convertParalelAssignments = (paralellAssignments, seqLength, alwaysLength) =>{
+        let alwaysUpdate = alwaysLength === 0 ? "" : ", alwaysUpdate()";
         let toWriteStr = "";
         for (let i = 0; i < paralellAssignments.length; i++){
             toWriteStr += "process Assignment" + (i + 1 + seqLength) + "() {\n\n";
@@ -189,30 +191,30 @@ class UTYtoXTAConverter {
                 let expression = paralellAssignments[i][j-1][0];
                 if (guard !== "") {
                     if(j+1 === paralellAssignments[i].length+1){
-                        toWriteStr += "\tS" + (j) +" -> S1 {guard " + guard + ";   assign " + expression + ", repeatCounter += 1;},\n";
+                        toWriteStr += "\tS" + (j) +" -> S1 {guard " + guard + ";   assign " + expression + ", repeatCounter += 1" + alwaysUpdate +";},\n";
                         toWriteStr += "\tS" + (j) +" -> S1 {guard !(" + guard + "); assign  repeatCounter += 1;},\n";
                         toWriteStr += "\tS1 -> S0 { guard repeatNumber == repeatCounter; assign nextAssign = -1;};\n";
                     }
                     else{
                         if(j === 1){
-                            toWriteStr += "\tS" + (j) +" -> S"+ (j+1) +"  {guard  " + guard + " && repeatNumber != repeatCounter;   assign " + expression + ";},\n";
+                            toWriteStr += "\tS" + (j) +" -> S"+ (j+1) +"  {guard  " + guard + " && repeatNumber != repeatCounter;   assign " +  expression + "" + alwaysUpdate + ";},\n";
                             toWriteStr += "\tS" + (j) +" -> S"+ (j+1) +"  {guard !(" + guard + ") && repeatNumber != repeatCounter; },\n";
                         }else{
-                            toWriteStr += "\tS" + (j) +" -> S"+ (j+1) +"  {guard " + guard + "; assign " + expression + ";},\n";
+                            toWriteStr += "\tS" + (j) +" -> S"+ (j+1) +"  {guard " + guard + "; assign " + expression + "" + alwaysUpdate + + ";},\n";
                             toWriteStr += "\tS" + (j) +" -> S"+ (j+1) +"  {guard !(" + guard + ");},\n";
                         }
                     }
 
                 } else {
                     if(j+1 === paralellAssignments[i].length+1){
-                        toWriteStr += "\tS" + (j) + " -> S1{ assign " + expression + ", repeatCounter += 1;},\n";
+                        toWriteStr += "\tS" + (j) + " -> S1{ assign " + expression + ", repeatCounter += 1 " + alwaysUpdate + ";},\n";
                         toWriteStr += "\tS1  -> S0 { guard repeatNumber == repeatCounter; assign nextAssign = -1;};\n";
                     }
                     else{
                         if(j === 1){
-                            toWriteStr += "\tS" + (j) +" -> S" + (j+1) + "{guard  repeatNumber != repeatCounter;  assign " + expression + ";},\n";
+                            toWriteStr += "\tS" + (j) +" -> S" + (j+1) + "{guard  repeatNumber != repeatCounter;  assign " + expression + "" + alwaysUpdate +";},\n";
                         }else{
-                            toWriteStr += "\tS" + (j) +" -> S" + (j+1) + "{ assign " + expression + ";},\n";
+                            toWriteStr += "\tS" + (j) +" -> S" + (j+1) + "{ assign " + expression + "" + alwaysUpdate + ";},\n";
                         }
 
                     }

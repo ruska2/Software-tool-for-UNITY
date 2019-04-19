@@ -1,9 +1,10 @@
 #struct{
     float: left;
-    width: 12%;
-    height: 104vh;
+    height: 80vh;
     background: #ffffff;
     border-right: 5px solid #7BCCCC;
+    position: relative;
+    min-width: 200px;
 }
 
 #plus{
@@ -58,6 +59,7 @@
     background-color: rgb(119, 119, 119);
     font-size: 12px;
     padding-top: 5px;
+    white-space: nowrap;
 }
 
 #line{
@@ -65,6 +67,7 @@
     height: 25px;
     font-size: 12px;
     padding-top: 5px;
+    white-space: nowrap;
 }
 
 #line:hover {
@@ -90,23 +93,26 @@
 }
 
 .fileIcon{
-    margin-left: 10px;
     margin-right: 4px;
-    float: left;
     margin-top: 4px;
+    position: absolute;
+    padding-left: 5px;
 
 }
 
 .fileName{
     float: left;
     margin-top: 3px;
+    position: absolute;
+    padding-left: 25px;
+    width: 70%;
+    overflow: hidden;
 }
 
 /* The container <div> - needed to position the dropdown content */
 .dropdown {
     position: relative;
     display: inline-block;
-    z-index: 5;
     float: right;
 }
 
@@ -118,7 +124,7 @@
     min-width: 130px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     font-family: 'Questrial',sans-serif;
-    z-index: 1;
+    z-index: 15;
     top: 10px;
     left: 10px;
     font-size: 12px;
@@ -139,3 +145,4 @@
 .dropdown:hover .dropdown-content {
     display: block;
 }
+

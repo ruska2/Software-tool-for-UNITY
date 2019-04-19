@@ -1,0 +1,19 @@
+#xtaverifholder{
+    float: right;
+    width: calc(45% - 5px);
+    height: 20vh;
+    overflow: hidden;
+
+}
+
+#xtaverificationLabel {
+    height: 30px;
+    margin-top: 4px;
+    margin-left: 10px;
+    font-size: 16px;
+    color: rgb(63, 64, 63);
+    width: calc(80% - 10px);
+    font-family: 'Signika', sans-serif;
+    horiz-align: center;
+    padding-top: 6px;
+}
