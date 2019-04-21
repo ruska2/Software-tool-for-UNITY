@@ -1,0 +1,24 @@
+/*holder of editors*/
+#editors{
+    float: left;
+    height: 80vh;
+    width: calc(100% - 205px);
+    display: block;
+}
+
+#verificators{
+    float: left;
+    height: 20vh;
+    width: calc(100%);
+    display: block;
+}
+
+#footer{
+    height: 5vh;
+    width: 100%;
+    text-align: center;
+    font-family: 'Questrial',sans-serif;
+    color: rgb(63, 64, 63);
+    font-size: 16px;
+    float: left;
+}

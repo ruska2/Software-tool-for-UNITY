@@ -1,0 +1,66 @@
+#edit{
+    float: left;
+    margin-top: 200px;
+}
+
+#unityEditorHolder{
+    float: left;
+    width: 55%;
+    height: 60vh;
+    overflow: hidden;
+    border-right: 5px solid #7BCCCC;
+    /*border-right: 5px solid #7BCCCC;*/
+}
+
+#uploadLabel{
+    font: bold 11px Arial;
+    text-decoration: none;
+    background-color: #EEEEEE;
+    color: #333333;
+    padding: 2px 6px 2px 6px;
+    border-top: 1px solid #CCCCCC;
+    border-right: 1px solid #333333;
+    border-bottom: 1px solid #333333;
+    border-left: 1px solid #CCCCCC;
+    width: 80px;
+    display: block;
+}
+
+#editorfilename{
+    height: 36px;
+    background-color: white;
+    width: 100%;
+}
+
+#diveditorfilename{
+    font-family: 'Questrial',sans-serif;
+    font-size: 14px;
+    text-align: center;
+    height: 22px;
+    padding-top: 3px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+#toXtaBtn{
+    border: none;
+    background: #0e1698;
+    color: #ffffff !important;
+    font-weight: 100;
+    padding: 5px;
+    margin: 5px;
+    border-radius: 6px;
+    display: inline-block;
+}
+
+#toXtaBtn:hover{
+    cursor: pointer;
+    background-color: darkslateblue;
+}
+
+#utyEditorSettings{
+    height: 36px;
+}
+
+
