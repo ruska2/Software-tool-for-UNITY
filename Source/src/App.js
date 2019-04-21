@@ -1,22 +1,15 @@
 import React, { Component } from 'react';
 import './App.css';
-import Content from "./Content/Content";
+import UNITYEditor from "./UNITYEditor";
 
 class App extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-        };
-    }
-
-
-    render() {
-        return (
-            <div className="App">
-                <Content/>
-            </div>
-        )
-    }
+  render() {
+    return (
+      <div className="App">
+        <UNITYEditor/>
+      </div>
+    )
+  }
 }
 
 export default App;
