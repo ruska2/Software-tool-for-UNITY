@@ -23,6 +23,9 @@ class AlwaysParser{
     };
 
     parseOneInitLine(line){
+        let splitOnIf = line.split("if");
+        line = splitOnIf[0];
+        let guard = splitOnIf.length === 2 ? splitOnIf[1] : "";
         let splitedLine = line.split("=");
         if (!this.errorHandler.checkInitialyEqualsLength(splitedLine.length)){
             return false;
@@ -52,6 +55,12 @@ class AlwaysParser{
                     else{
                         this.initializedVariables[key] = [valueType, valueType === "int" ? 0 : "false"];
                     }
+                    this.alwaysSectionLines.push(key +" = " + value);
+                }
+                if (guard !== ""){
+                    this.alwaysSectionLines.push("if (" + guard +"){\n\t\t" + key +" = " + value + ";\n\t}");
+                }
+                else{
                     this.alwaysSectionLines.push(key +" = " + value);
                 }
 

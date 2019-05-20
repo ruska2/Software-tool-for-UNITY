@@ -50,6 +50,10 @@ class UTYtoXTAParser  {
         if (!assignVariables) return false;
         this.sequentialAssignments = assignParser.sequentialAssignments;
         this.paralellAssignments = assignParser.paralellAssignments;
+        if (this.paralellAssignments.length + this.sequentialAssignments.length === 0) {
+            localStorage.setItem("errorMsg", "Syntax Error : Assign section not declared!");
+            return false;
+        }
         return true;
     };
 }
